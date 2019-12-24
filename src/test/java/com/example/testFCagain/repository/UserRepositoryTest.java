@@ -14,7 +14,7 @@ public class UserRepositoryTest extends TestFCagainApplicationTests {
     private UserRepository userRepository;
 
     @Test
-    public void create(){
+    public void create() {
         User user = new User();
         user.setAccount("sisi");
         user.setEmail("sisi.sisi.com");
@@ -26,12 +26,42 @@ public class UserRepositoryTest extends TestFCagainApplicationTests {
     }
 
     @Test
-    public void read(){
+    public void read() {
         Optional<User> user = userRepository.findById(2L);
 
-        user.ifPresent(selectUser ->{
-            System.out.println("user: "+ selectUser);
-            System.out.println("email: "+selectUser.getEmail());
+        user.ifPresent(selectUser -> {
+            System.out.println("user: " + selectUser);
+            System.out.println("email: " + selectUser.getEmail());
         });
+    }
+
+    @Test
+    public void update() {
+        Optional<User> user = userRepository.findById(2L);
+
+        user.ifPresent(selectUser -> {
+            selectUser.setAccount("update account");
+            selectUser.setUpdatedAt(LocalDateTime.now());
+            selectUser.setUpdatedBy("update test");
+
+            userRepository.save(selectUser);
+        });
+    }
+
+    @Test
+    public void delete() {
+        Optional<User> user = userRepository.findById(2L);
+
+        user.ifPresent(selectUser -> {
+            userRepository.delete(selectUser);
+        });
+
+        Optional<User> deleteUser = userRepository.findById(2L);
+
+        if (deleteUser.isPresent()) {
+            System.out.println("데이터 존재: " + deleteUser.get());
+        } else {
+            System.out.println("데이터 없음");
+        }
     }
 }
