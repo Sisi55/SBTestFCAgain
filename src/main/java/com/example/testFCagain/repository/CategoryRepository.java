@@ -1,4 +1,7 @@
 package com.example.testFCagain.repository;
 
-public interface CategoryRepository {
+import com.example.testFCagain.model.entity.Category;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CategoryRepository extends JpaRepository<Category, Long> {
 }

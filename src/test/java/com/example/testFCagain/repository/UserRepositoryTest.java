@@ -18,29 +18,15 @@ public class UserRepositoryTest extends TestFCagainApplicationTests {
     @Test
     @Transactional
     public void create() {
-        User user = new User();
-        user.setAccount("sisi");
-        user.setEmail("sisi.sisi.com");
-        user.setPhoneNumber("010-010");
-        user.setCreatedAt(LocalDateTime.now());
-        user.setCreatedBy("sisi");
 
-        userRepository.save(user);
+
     }
 
     @Test
     @Transactional
     public void  read() {
-//        Optional<User> user = userRepository.findById(1L);
-        Optional<User> user = userRepository.findByAccount("sisi");
 
-        user.ifPresent(selectUser -> {
-//            System.out.println("user: " + selectUser);
-//            System.out.println("email: " + selectUser.getEmail());
-            selectUser.getOrderDetailList().stream().forEach(detail->{
-                System.out.println(detail.getItem());
-            });
-        });
+
     }
 
     @Test
