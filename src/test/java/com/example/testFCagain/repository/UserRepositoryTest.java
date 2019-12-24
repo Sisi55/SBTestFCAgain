@@ -2,8 +2,10 @@ package com.example.testFCagain.repository;
 
 import com.example.testFCagain.TestFCagainApplicationTests;
 import com.example.testFCagain.model.entity.User;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -14,6 +16,7 @@ public class UserRepositoryTest extends TestFCagainApplicationTests {
     private UserRepository userRepository;
 
     @Test
+    @Transactional
     public void create() {
         User user = new User();
         user.setAccount("sisi");
@@ -26,16 +29,22 @@ public class UserRepositoryTest extends TestFCagainApplicationTests {
     }
 
     @Test
-    public void read() {
-        Optional<User> user = userRepository.findById(2L);
+    @Transactional
+    public void  read() {
+//        Optional<User> user = userRepository.findById(1L);
+        Optional<User> user = userRepository.findByAccount("sisi");
 
         user.ifPresent(selectUser -> {
-            System.out.println("user: " + selectUser);
-            System.out.println("email: " + selectUser.getEmail());
+//            System.out.println("user: " + selectUser);
+//            System.out.println("email: " + selectUser.getEmail());
+            selectUser.getOrderDetailList().stream().forEach(detail->{
+                System.out.println(detail.getItem());
+            });
         });
     }
 
     @Test
+    @Transactional
     public void update() {
         Optional<User> user = userRepository.findById(2L);
 
@@ -49,19 +58,16 @@ public class UserRepositoryTest extends TestFCagainApplicationTests {
     }
 
     @Test
+    @Transactional
     public void delete() {
-        Optional<User> user = userRepository.findById(2L);
+        Optional<User> user = userRepository.findById(1L);
+        Assert.assertTrue(user.isPresent());
 
         user.ifPresent(selectUser -> {
             userRepository.delete(selectUser);
         });
 
         Optional<User> deleteUser = userRepository.findById(2L);
-
-        if (deleteUser.isPresent()) {
-            System.out.println("데이터 존재: " + deleteUser.get());
-        } else {
-            System.out.println("데이터 없음");
-        }
+        Assert.assertFalse(deleteUser.isPresent());
     }
 }
